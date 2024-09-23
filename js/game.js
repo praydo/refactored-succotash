@@ -29,6 +29,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// Определяем функцию sendScore (только один раз)
 function sendScore(score) {
     if (window.Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
         // Отправляем данные в бота
@@ -37,8 +38,6 @@ function sendScore(score) {
         console.log('Игра запущена вне Telegram Web App');
     }
 }
-
-
 
 // Игровой цикл
 function loop() {
@@ -81,42 +80,42 @@ function loop() {
     context.fillStyle = 'red';
     context.fillRect(apple.x, apple.y, grid - 1, grid - 1);
 
-// Рисуем змейку
-context.fillStyle = 'green';
-snake.cells.forEach(function (cell, index) {
+    // Рисуем змейку
+    context.fillStyle = 'green';
+    snake.cells.forEach(function (cell, index) {
 
-    context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
+        context.fillRect(cell.x, cell.y, grid - 1, grid - 1);
 
-    // Если змейка съела яблоко
-    if (cell.x === apple.x && cell.y === apple.y) {
-        snake.maxCells++;
+        // Если змейка съела яблоко
+        if (cell.x === apple.x && cell.y === apple.y) {
+            snake.maxCells++;
 
-        // Размещаем яблоко в новом случайном месте
-        apple.x = getRandomInt(0, 25) * grid;
-        apple.y = getRandomInt(0, 25) * grid;
-    }
-
-    // Проверяем столкновение с самим собой
-    for (let i = index + 1; i < snake.cells.length; i++) {
-
-        if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-            // Отправляем текущий счет перед сбросом игры
-            sendScore(snake.maxCells - 4);
-
-            // Сброс игры
-            snake.x = 160;
-            snake.y = 160;
-            snake.cells = [];
-            snake.maxCells = 4;
-            snake.dx = grid;
-            snake.dy = 0;
-
+            // Размещаем яблоко в новом случайном месте
             apple.x = getRandomInt(0, 25) * grid;
             apple.y = getRandomInt(0, 25) * grid;
         }
-    }
-});
 
+        // Проверяем столкновение с самим собой
+        for (let i = index + 1; i < snake.cells.length; i++) {
+
+            if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+                // Отправляем текущий счет перед сбросом игры
+                sendScore(snake.maxCells - 4);
+
+                // Сброс игры
+                snake.x = 160;
+                snake.y = 160;
+                snake.cells = [];
+                snake.maxCells = 4;
+                snake.dx = grid;
+                snake.dy = 0;
+
+                apple.x = getRandomInt(0, 25) * grid;
+                apple.y = getRandomInt(0, 25) * grid;
+            }
+        }
+    });
+}
 
 // Управление змейкой с помощью клавиатуры
 document.addEventListener('keydown', function (e) {
@@ -142,6 +141,7 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
+// Управление змейкой с помощью сенсорного экрана (для мобильных устройств)
 let touchStartX = 0;
 let touchStartY = 0;
 
@@ -180,7 +180,6 @@ canvas.addEventListener('touchmove', function (e) {
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
 }, false);
-
 
 // Запускаем игру
 requestAnimationFrame(loop);
