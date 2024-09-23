@@ -85,24 +85,25 @@ function loop() {
             apple.y = getRandomInt(0, 25) * grid;
         }
 
-        // Проверяем столкновение с самим собой
-        for (let i = index + 1; i < snake.cells.length; i++) {
+// Проверяем столкновение с самим собой
+for (let i = index + 1; i < snake.cells.length; i++) {
+    if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+        // Отправляем текущий счет перед сбросом игры
+        sendScore(snake.maxCells - 4);
 
-            if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-                // Сброс игры
-                snake.x = 160;
-                snake.y = 160;
-                snake.cells = [];
-                snake.maxCells = 4;
-                snake.dx = grid;
-                snake.dy = 0;
+        // Сброс игры
+        snake.x = 160;
+        snake.y = 160;
+        snake.cells = [];
+        snake.maxCells = 4;
+        snake.dx = grid;
+        snake.dy = 0;
 
-                apple.x = getRandomInt(0, 25) * grid;
-                apple.y = getRandomInt(0, 25) * grid;
-            }
-        }
-    });
+        apple.x = getRandomInt(0, 25) * grid;
+        apple.y = getRandomInt(0, 25) * grid;
+    }
 }
+
 
 // Управление змейкой с помощью клавиатуры
 document.addEventListener('keydown', function (e) {
