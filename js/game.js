@@ -180,11 +180,6 @@ canvas.addEventListener('touchmove', function (e) {
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
 }, false);
-function sendScore(score) {
-    if (window.Telegram.WebApp) {
-        Telegram.WebApp.sendData(JSON.stringify({ score: score }));
-    }
-}
 
 
 // Запускаем игру
