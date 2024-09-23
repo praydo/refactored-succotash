@@ -29,6 +29,17 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function sendScore(score) {
+    if (window.Telegram.WebApp && Telegram.WebApp.initDataUnsafe) {
+        // Отправляем данные в бота
+        Telegram.WebApp.sendData(JSON.stringify({ score: score }));
+    } else {
+        console.log('Игра запущена вне Telegram Web App');
+    }
+}
+
+
+
 // Игровой цикл
 function loop() {
     requestAnimationFrame(loop);
